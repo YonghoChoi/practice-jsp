@@ -28,8 +28,8 @@
         <param-value>
             jdbcDriver=com.mysql.jdbc.Driver
             jdbcUrl=jdbc:mysql://localhost:3306/board?characterEncoding=utf8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC
-            dbUser=yongho
-            dbPass=dydgh
+            dbUser=admin
+            dbPass=test
             validationQuery=select 1
             minIdle=3
             maxTotal=30
@@ -51,4 +51,13 @@
         <servlet-name>ControllerUsingURI</servlet-name>
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
+
+    <filter>
+        <filter-name>LoginCheckFilter</filter-name>
+        <filter-class>filter.LoginCheckFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginCheckFilter</filter-name>
+        <url-pattern>/changePwd.do</url-pattern>
+    </filter-mapping>
 </web-app>
