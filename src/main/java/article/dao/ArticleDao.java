@@ -44,6 +44,16 @@ public class ArticleDao {
         }
     }
 
+    public int update(Connection conn, int no, String title) throws SQLException {
+        try(PreparedStatement pstmt = conn.prepareStatement(
+                "update article set title= ?, moddate = now() where article_no = ?"
+        )) {
+            pstmt.setString(1, title);
+            pstmt.setInt(2, no);
+            return pstmt.executeUpdate();
+        }
+    }
+
     public List<Article> select(Connection conn, int startRow, int size) throws SQLException {
         try (PreparedStatement pstmt = conn.prepareStatement("select * from article order by article_no desc limit ?, ?")){
             pstmt.setInt(1, startRow);
@@ -56,18 +66,6 @@ public class ArticleDao {
                 return result;
             }
         }
-    }
-
-    private Article convertArticle(ResultSet rs) throws SQLException {
-        return new Article(rs.getInt("article_no"),
-                new Writer(
-                        rs.getString("writer_id"),
-                        rs.getString("writer_name")),
-                rs.getString("title"),
-                toDate(rs.getTimestamp("regdate")),
-                toDate(rs.getTimestamp("moddate")),
-                rs.getInt("read_cnt")
-                );
     }
 
     public Article selectById(Connection conn, int no) throws SQLException {
@@ -83,21 +81,6 @@ public class ArticleDao {
         }
     }
 
-    public void increaseReadCount(Connection conn, int no) throws SQLException {
-        try(PreparedStatement pstmt = conn.prepareStatement("update article set read_cnt = read_cnt + 1 where article_no = ?")) {
-            pstmt.setInt(1, no);
-            pstmt.executeUpdate();
-        }
-    }
-
-    private Date toDate(Timestamp datetime) {
-        return new Date(datetime.getTime());
-    }
-
-    private Timestamp toTimestamp(Date date) {
-        return new Timestamp(date.getTime());
-    }
-
     public int selectCount(Connection conn) throws SQLException {
         try(Statement stmt = conn.createStatement()) {
             try(ResultSet rs = stmt.executeQuery("select count(*) from article")) {
@@ -108,4 +91,31 @@ public class ArticleDao {
             return 0;
         }
     }
+
+    public void increaseReadCount(Connection conn, int no) throws SQLException {
+        try(PreparedStatement pstmt = conn.prepareStatement("update article set read_cnt = read_cnt + 1 where article_no = ?")) {
+            pstmt.setInt(1, no);
+            pstmt.executeUpdate();
+        }
+    }
+
+    private Article convertArticle(ResultSet rs) throws SQLException {
+        return new Article(rs.getInt("article_no"),
+                new Writer(
+                        rs.getString("writer_id"),
+                        rs.getString("writer_name")),
+                rs.getString("title"),
+                toDate(rs.getTimestamp("regdate")),
+                toDate(rs.getTimestamp("moddate")),
+                rs.getInt("read_cnt")
+        );
+    }
+
+    private Date toDate(Timestamp datetime) {
+        return new Date(datetime.getTime());
+    }
+    private Timestamp toTimestamp(Date date) {
+        return new Timestamp(date.getTime());
+    }
+
 }
