@@ -17,12 +17,12 @@
   </tr>
   <tr>
     <td>제목</td>
-    <td><c:out value="${article.title}"/></td>
+    <td><c:out value="${articleData.article.title}"/></td>
   </tr>
   <tr>
     <td>내용</td>
     <%--<td><u:pre value="${articleData.content}"/></td>--%>
-    <td>${articleData.content}</td>
+    <td>${articleData.content.content}</td>
   </tr>
   <tr>
     <td colspan="2">

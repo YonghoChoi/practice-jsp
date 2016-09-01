@@ -5,7 +5,8 @@
     <title>가입</title>
 </head>
 <body>
-<form action="join.do" method="post">
+<form action="join.do" method="post" enctype="multipart/form-data">
+<%--<form action="join.do" method="post">--%>
     <p>
         아이디 : <br><input type="text" name="id" value="${param.id}">
         <c:if test="${errors.id}">ID를 입력하세요.</c:if>
@@ -23,6 +24,10 @@
         확인 : <br><input type="password" name="confirmPassword" value="${param.confirmPassword}">
         <c:if test="${errors.confirmPassword}">확인을 입력하세요.</c:if>
         <c:if test="${errors.notMatch}">암호와 확인이 일치하지 않습니다.</c:if>
+    </p>
+    <p>
+        <input type="checkbox" name="vehicle" value="Bike" checked> I have a bike<br>
+        <input type="checkbox" name="vehicle" value="Car" checked> I have a car<br>
     </p>
     <input type="submit" value="가입">
 </form>

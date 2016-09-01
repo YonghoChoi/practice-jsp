@@ -26,7 +26,6 @@ public class ConnectionWrap implements AutoCloseable {
     }
 
     public ResultSet executeQuery(PreparedStatement pstmt) throws SQLException {
-        this.dirty = true;
         return pstmt.executeQuery();
     }
 
@@ -36,7 +35,6 @@ public class ConnectionWrap implements AutoCloseable {
     }
 
     public ResultSet executeQuery(Statement stmt, String query) throws SQLException {
-        this.dirty = true;
         return stmt.executeQuery(query);
     }
 
